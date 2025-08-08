@@ -45,7 +45,7 @@ controle das permissões de acesso.
 1. **Clonar este repositório**  
    ```bash
    git clone https://github.com/RafaelClaumann/PGBD-1.git
-   cd e_shop
+   cd pgdb_1
    ```
 
 2. **Verificar scripts de inicialização**
