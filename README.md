@@ -1,4 +1,4 @@
-# Desafio 1 - Gerenciamento de Banco de Dados Estudo de Caso 
+# Desafio 1 - Gerenciamento de Banco de Dados Estudo de Caso
 
 O objetivo é aplicar os conceitos como backup e restauração, recuperação de dados, controle de permissões, ética e segurança, integridade e consistência de dados.
 
@@ -32,3 +32,45 @@ controle das permissões de acesso.
 5. Ética e Segurança: Identificar vulnerabilidades, como o armazenamento inseguro de senhas (está sendo armazenada como texto) e protocolos inseguros de redes (não está descrito, mas deve haver a preocupação). Propor soluções.
 
 6. Integridade e Consistência de Dados: Verificar as tabelas e identificar problemas de integridade e consistência. Implementar melhorias, como a adição de constraints.
+
+# Iniciando o banco de dados
+
+### 📦 Pré-requisitos
+
+- [Docker](https://docs.docker.com/get-docker/) instalado
+- [Docker Compose](https://docs.docker.com/compose/install/) instalado
+
+### 🚀 Como rodar
+
+1. **Clonar este repositório**  
+   ```bash
+   git clone https://seu-repo-aqui.git
+   cd e_shop
+   ```
+
+2. **Verificar scripts de inicialização**
+
+    ```txt
+    init-scripts/
+    ├── 00-schema.sql  # Criação de tabelas
+    └── 01-data.sql    # Inserção de dados iniciais
+    ```
+
+3. **Subir os containers**
+
+    ```txt
+    docker compose up -d
+    ```
+
+    - `MySQL` rodando na porta 3606
+    - `phpMyAdmin` rodando na porta 8080
+
+### 🌐 Acessando o banco
+
+- `phpMyAdmin`: abrir o navegador e acessar http://localhost:8080
+
+### 💣 Removendo tudo e limpando o ambiente
+
+```bash
+docker compose down --volumes --remove-orphans
+```
