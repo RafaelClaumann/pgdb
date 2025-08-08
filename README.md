@@ -44,7 +44,7 @@ controle das permissões de acesso.
 
 1. **Clonar este repositório**  
    ```bash
-   git clone [https://seu-repo-aqui.git](https://github.com/RafaelClaumann/PGBD-1.git)
+   git clone https://github.com/RafaelClaumann/PGBD-1.git
    cd e_shop
    ```
 
