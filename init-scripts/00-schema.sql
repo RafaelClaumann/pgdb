@@ -56,6 +56,7 @@ CREATE TABLE ItensPedidos (
 /* MODIFICANDO*/
 CREATE TABLE Endereco (
     id INT PRIMARY KEY,
+    id_cliente INT NOT NULL,
     logradouro VARCHAR(155) NOT NULL,
     numero INT NOT NULL,
     complemento VARCHAR(50) NOT NULL,
@@ -63,5 +64,5 @@ CREATE TABLE Endereco (
     cidade  VARCHAR(30) NOT NULL,
     estado VARCHAR(2) NOT NULL,
     cep INT NOT NULL,
-    CONSTRAINT fk_cliente_endereco FOREIGN KEY (id) REFERENCES Clientes (id)
+    CONSTRAINT fk_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Clientes (id)
 );
