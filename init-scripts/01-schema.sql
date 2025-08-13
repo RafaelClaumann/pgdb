@@ -35,10 +35,12 @@ CREATE TABLE Pedidos (
     id INT PRIMARY KEY,
     id_cliente INT,
     id_funcionario INT,
+    id_pedido INT NOT NULL,
     data_pedido DATE NOT NULL,
     status VARCHAR(50) NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES Clientes (id),
-    FOREIGN KEY (id_funcionario) REFERENCES Funcionarios (id)
+    FOREIGN KEY (id_funcionario) REFERENCES Funcionarios (id),
+    CONSTRAINT fk_status_pedido FOREIGN KEY (id_pedido) REFERENCES Pedidos (id)
 );
 
 -- Criação da tabela Itens de Pedidos
@@ -52,7 +54,7 @@ CREATE TABLE ItensPedidos (
     FOREIGN KEY (id_produto) REFERENCES Produtos (id)
 );
 
-CREATE TABLE Endereco (
+CREATE TABLE Enderecos (
     id INT PRIMARY KEY,
     id_cliente INT NOT NULL,
     logradouro VARCHAR(155) NOT NULL,
