@@ -30,6 +30,11 @@ CREATE TABLE Produtos (
     quantidade_estoque INT NOT NULL
 );
 
+CREATE TABLE Status (
+  id INT PRIMARY KEY,
+  nome ENUM('CARRINHO', 'PAGAMENTO', 'ANDAMENTO', 'ENTREGUE') NOT NULL UNIQUE
+);
+
 -- Criação da tabela Pedidos
 CREATE TABLE Pedidos (
     id INT PRIMARY KEY,
@@ -64,9 +69,4 @@ CREATE TABLE Enderecos (
     estado VARCHAR(2) NOT NULL,
     cep INT NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES Clientes (id)
-);
-
-CREATE TABLE Status (
-  id INT PRIMARY KEY,
-  nome ENUM('CARRINHO', 'PAGAMENTO', 'ANDAMENTO', 'ENTREGUE') NOT NULL UNIQUE
 );

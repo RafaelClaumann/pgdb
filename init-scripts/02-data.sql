@@ -13,17 +13,17 @@ INSERT INTO Produtos (id, nome, descricao, preco, quantidade_estoque)
 VALUES      (1, 'Smartphone XYZ', 'Smartphone com tela de 6.5", 128GB de armazenamento e câmera de 48MP', 1500.00, 25),
             (2, 'Fone de Ouvido Bluetooth', 'Fone de ouvido bluetooth com cancelamento de ruído', 300.00, 50);
 
-INSERT INTO Pedidos (id, id_cliente, id_funcionario, data_pedido, id_status)
-VALUES      (1, 1, 1, '2023-03-25', 4),
-            (2, 2, 2, '2023-03-28', 3);
-
-INSERT INTO ItensPedidos (id_pedido, id_produto, quantidade, preco_unitario)
-VALUES      (1, 1, 1, 1500.00),
-            (1, 2, 2, 300.00),
-            (2, 2, 1, 300.00);
-
 INSERT INTO Status (id, nome)
 VALUES      (1, 'CARRINHO'),
             (2, 'PAGAMENTO'),
             (3, 'ANDAMENTO'),
             (4, 'ENTREGUE');
+
+INSERT INTO Pedidos (id, id_cliente, id_funcionario, id_status, data_pedido)
+VALUES      (1, 1, 1, 4, '2023-03-25'),
+            (2, 2, 2, 3, '2023-03-28');
+
+INSERT INTO ItensPedidos (id_pedido, id_produto, quantidade, preco_unitario)
+VALUES      (1, 1, 1, 1500.00),
+            (1, 2, 2, 300.00),
+            (2, 2, 1, 300.00);
