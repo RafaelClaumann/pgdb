@@ -51,3 +51,21 @@ CREATE TABLE ItensPedidos (
     FOREIGN KEY (id_pedido) REFERENCES Pedidos (id),
     FOREIGN KEY (id_produto) REFERENCES Produtos (id)
 );
+
+
+/* MODIFICANDO*/
+CREATE TABLE Endereco (
+    id INT PRIMARY KEY,
+    logradouro VARCHAR(155) NOT NULL,
+    numero INT NOT NULL,
+    complemento VARCHAR(50) NOT NULL,
+    bairro VARCHAR(50) NOT NULL,	
+    cidade  VARCHAR(30) NOT NULL,
+    estado VARCHAR(2) NOT NULL,
+    cep INT NOT NULL,
+    CONSTRAINT fk_cliente_endereco FOREIGN KEY (id) REFERENCES Clientes (id)
+);
+CONSTRAINT fk_cliente_endereco   -- Nome personalizado aqui (ex: "fk_cliente")
+        FOREIGN KEY (cliente_id)
+        REFERENCES Clientes(id)
+        ON DELETE CASCADE
