@@ -53,7 +53,7 @@ CREATE TABLE ItensPedidos (
 );
 
 
-/* MODIFICANDO*/
+/* MODIFICANDO TABELAS*/
 CREATE TABLE Endereco (
     id INT PRIMARY KEY,
     id_cliente INT NOT NULL,
