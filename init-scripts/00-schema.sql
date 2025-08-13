@@ -66,3 +66,8 @@ CREATE TABLE Endereco (
     cep INT NOT NULL,
     CONSTRAINT fk_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Clientes (id)
 );
+
+CREATE TABLE Status (
+  id INT NOT NULL,
+  nome enum('CARRINHO', 'PAGAMENTO', 'ANDAMENTO', 'ENTREGUE') NOT NULL
+);
