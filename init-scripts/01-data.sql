@@ -21,3 +21,9 @@ INSERT INTO ItensPedidos (id_pedido, id_produto, quantidade, preco_unitario)
 VALUES      (1, 1, 1, 1500.00),
             (1, 2, 2, 300.00),
             (2, 2, 1, 300.00);
+
+INSERT INTO Status (id, nome)
+VALUES      (1, 'CARRINHO'),
+            (2, 'PAGAMENTO'),
+            (3, 'ANDAMENTO'),
+            (4, 'ENTREGUE');
