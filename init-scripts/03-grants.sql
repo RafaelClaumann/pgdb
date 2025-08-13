@@ -7,7 +7,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON loja.Enderecos TO 'pdv_role';
 GRANT SELECT ON loja.Funcionarios TO 'pdv_role';
 GRANT SELECT ON loja.Status TO 'pdv_role';
 
-CREATE USER 'app_pdv'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+CREATE USER 'app_pdv'@'%' IDENTIFIED WITH caching_sha2_password BY 'password';
 GRANT 'pdv_role' TO 'app_pdv'@'%';
 SET DEFAULT ROLE 'pdv_role' TO 'app_pdv'@'%';
 
