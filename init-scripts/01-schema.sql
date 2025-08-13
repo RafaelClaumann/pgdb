@@ -37,7 +37,6 @@ CREATE TABLE Pedidos (
     id_funcionario INT,
     id_status INT NOT NULL,
     data_pedido DATE NOT NULL,
-    status VARCHAR(50) NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES Clientes (id),
     FOREIGN KEY (id_funcionario) REFERENCES Funcionarios (id),
     FOREIGN KEY (id_status) REFERENCES Status (id)
