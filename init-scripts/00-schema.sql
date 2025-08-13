@@ -9,7 +9,7 @@ CREATE TABLE Clientes (
     email VARCHAR(255) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     endereco VARCHAR(255) NOT NULL,
-    telefone VARCHAR(15)
+    telefone VARCHAR(15) NOT NULL
 );
 
 -- Criação da tabela Funcionários
@@ -52,22 +52,20 @@ CREATE TABLE ItensPedidos (
     FOREIGN KEY (id_produto) REFERENCES Produtos (id)
 );
 
-
-/* MODIFICANDO*/
 CREATE TABLE Endereco (
     id INT PRIMARY KEY,
     id_cliente INT NOT NULL,
     logradouro VARCHAR(155) NOT NULL,
     numero INT NOT NULL,
-    complemento VARCHAR(50) NOT NULL,
-    bairro VARCHAR(50) NOT NULL,	
-    cidade  VARCHAR(30) NOT NULL,
+    complemento VARCHAR(50),
+    bairro VARCHAR(50) NOT NULL,
+    cidade VARCHAR(30) NOT NULL,
     estado VARCHAR(2) NOT NULL,
     cep INT NOT NULL,
     CONSTRAINT fk_cliente_endereco FOREIGN KEY (id_cliente) REFERENCES Clientes (id)
 );
 
 CREATE TABLE Status (
-  id INT NOT NULL,
-  nome enum('CARRINHO', 'PAGAMENTO', 'ANDAMENTO', 'ENTREGUE') NOT NULL
+  id INT PRIMARY KEY,
+  nome ENUM('CARRINHO', 'PAGAMENTO', 'ANDAMENTO', 'ENTREGUE') NOT NULL UNIQUE
 );
