@@ -1,9 +1,9 @@
 -- Populando as tabelas
 USE loja;
 
-INSERT INTO Clientes (id, nome, email, senha, endereco, telefone)
-VALUES      (1, 'Maria Silva', 'maria@gmail.com', 'senha123', 'Rua das Flores, 15', '11987654321'),
-            (2, 'João Souza', 'joao@hotmail.com', 'joao123', 'Av. Paulista, 200', '11923456789');
+INSERT INTO Clientes (id, nome, email, senha, telefone)
+VALUES      (1, 'Maria Silva', 'maria@gmail.com', 'senha123', '11987654321'),
+            (2, 'João Souza', 'joao@hotmail.com', 'joao123', '11923456789');
 
 INSERT INTO Funcionarios (id, nome, cargo, salario, data_contratacao)
 VALUES      (1, 'Ana Cardoso', 'Gerente', 4500.00, '2022-01-15'),
@@ -27,3 +27,10 @@ INSERT INTO ItensPedidos (id_pedido, id_produto, quantidade, preco_unitario)
 VALUES      (1, 1, 1, 1500.00),
             (1, 2, 2, 300.00),
             (2, 2, 1, 300.00);
+
+INSERT INTO Enderecos(id, id_cliente, logradouro, numero, bairro, cidade, estado, cep)
+VALUES      (1, 1, 'Rua das gaivotas', 838, 'Ingleses', 'Florianópolis', 'SC', '88037-299'),
+            (2, 1, 'Rua do trabalho', 299, 'Centro', 'Florianópolis', 'SC', '88037-090');
+
+INSERT INTO Enderecos(id, id_cliente, logradouro, numero, complemento, bairro, cidade, estado, cep)
+VALUES      (3, 2, 'Rua dos urubus', 383, 'fundos, casa bege', 'Portugueses', 'Florianópolis', 'SC', '88037-199');

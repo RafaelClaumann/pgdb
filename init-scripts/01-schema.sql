@@ -8,7 +8,6 @@ CREATE TABLE Clientes (
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    endereco VARCHAR(255) NOT NULL,
     telefone VARCHAR(15) NOT NULL
 );
 
@@ -67,6 +66,6 @@ CREATE TABLE Enderecos (
     bairro VARCHAR(50) NOT NULL,
     cidade VARCHAR(30) NOT NULL,
     estado VARCHAR(2) NOT NULL,
-    cep INT NOT NULL,
+    cep VARCHAR(9) NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES Clientes (id)
 );
