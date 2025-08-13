@@ -65,7 +65,3 @@ CREATE TABLE Endereco (
     cep INT NOT NULL,
     CONSTRAINT fk_cliente_endereco FOREIGN KEY (id) REFERENCES Clientes (id)
 );
-CONSTRAINT fk_cliente_endereco   -- Nome personalizado aqui (ex: "fk_cliente")
-        FOREIGN KEY (cliente_id)
-        REFERENCES Clientes(id)
-        ON DELETE CASCADE
