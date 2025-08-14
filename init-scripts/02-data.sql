@@ -28,9 +28,15 @@ VALUES      (1, 1, 1, 1500.00),
             (1, 2, 2, 300.00),
             (2, 2, 1, 300.00);
 
+<<<<<<< Updated upstream:init-scripts/02-data.sql
 INSERT INTO Enderecos(id, id_cliente, logradouro, numero, bairro, cidade, estado, cep)
 VALUES      (1, 1, 'Rua das gaivotas', 838, 'Ingleses', 'Florianópolis', 'SC', '88037-299'),
             (2, 1, 'Rua do trabalho', 299, 'Centro', 'Florianópolis', 'SC', '88037-090');
 
 INSERT INTO Enderecos(id, id_cliente, logradouro, numero, complemento, bairro, cidade, estado, cep)
 VALUES      (3, 2, 'Rua dos urubus', 383, 'fundos, casa bege', 'Portugueses', 'Florianópolis', 'SC', '88037-199');
+=======
+
+
+
+>>>>>>> Stashed changes:init-scripts/01-data.sql
