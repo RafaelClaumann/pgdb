@@ -74,3 +74,7 @@ controle das permissões de acesso.
 ```bash
 docker compose down --volumes --remove-orphans
 ```
+
+```backups manuais
+docker compose run --rm backup
+```
