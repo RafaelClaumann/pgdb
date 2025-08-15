@@ -1,1 +1,4 @@
 .vscode/
+
+backups-host/*
+!backups-host/.gitkeep 
