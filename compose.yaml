@@ -25,18 +25,18 @@ services:
   backup:
     container_name: mysql_backup
     image: debian:bookworm-slim
-    restart: always
-    depends_on:
-      - db
     volumes:
-      - ./scripts-host:/scripts
-      - ./backups-host:/backups
+      - ./backup-scripts:/scripts
+      - ./backups-mapping:/backups
     entrypoint:
       - /bin/bash
       - -c
       - |
         apt-get update && apt-get install -y mariadb-client cron
-        crontab /scripts/cronjob
+        
+        # backup a cada um minuto
+        echo "* * * * * /scripts/backup.sh" | crontab -
+
         cron -f
 
 volumes:
