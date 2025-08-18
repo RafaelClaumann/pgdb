@@ -14,31 +14,34 @@ services:
       - ./init-scripts:/docker-entrypoint-initdb.d:ro
       - mysql_data:/var/lib/mysql
 
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db
-    ports:
-      - '8080:80'
-
   backup:
     container_name: mysql_backup
-    image: debian:bookworm-slim
+    image: ubuntu:22.04
     volumes:
+      - mysql_data:/var/lib/mysql
       - ./backup-scripts:/scripts
-      - ./backups-mapping:/backups
+      - ./backup-scripts/log.txt:/var/log/backup.log
     entrypoint:
       - /bin/bash
       - -c
       - |
-        apt-get update && apt-get install -y mariadb-client cron tzdata
+        apt update
+        apt install curl -y
+        curl -O https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+        apt install gnupg2 lsb-release ./percona-release_latest.generic_all.deb -y
+        apt update
+        percona-release setup pxb-80
+        apt install percona-xtrabackup-80 -y
+        xtrabackup --version
+        
+        apt install cron -y
+        
+        mkdir backups
 
-        ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-        echo "America/Sao_Paulo" > /etc/timezone
-
-        echo "* * * * * /scripts/backup.sh" | crontab -
-
+        # Configurar crons do root via crontab
+        (crontab -l 2>/dev/null; echo "* * * * * /scripts/backup.sh incremental >> /scripts/log.txt 2>&1") | crontab -
+        (crontab -l 2>/dev/null; echo "*/5 * * * * /scripts/backup.sh full >> /scripts/log.txt 2>&1") | crontab -
+        
         cron -f
 
 volumes:

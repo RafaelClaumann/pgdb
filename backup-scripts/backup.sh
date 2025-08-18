@@ -1,20 +1,55 @@
 #!/bin/bash
 
-exec >> /proc/1/fd/1 2>&1
-echo "Iniciando backup: $(date '+%Y-%m-%d %H:%M:%S.%3N')"
+#exec >> /proc/1/fd/1 2>&1
 
-MYSQL_HOST="db"
-MYSQL_USER="root"
-MYSQL_PASS="password"
-MYSQL_DB="loja"
+MYSQL_HOST=db
+MYSQL_USER=root
+MYSQL_PASSWORD=password
+MYSQL_DB=loja
 
-CURRENT_DATE=$(date +%F_%H-%M-%S)
-ARQUIVO="/backups/${MYSQL_DB}_${CURRENT_DATE}.sql"
+BACKUP_DIR=/backups
+MYSQL_DATA=/var/lib/mysql
+TYPE=$1
+DATE=$(date +"%Y-%m-%d_%H-%M-%S.%3N")
 
-mysqldump -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASS $MYSQL_DB  > $ARQUIVO
+LAST_FULL="$BACKUP_DIR/last_full.txt"
 
-echo "Finalizando backup: $(date '+%Y-%m-%d %H:%M:%S.%3N')"
-echo
+echo "[$DATE][START $TYPE BACKUP]"
 
-# Limpa backups antigos (mais de 7 dias)
-find /backups -type f -mtime +7 -delete
+if [ "$TYPE" = "full" ]; then
+    TARGET="$BACKUP_DIR/full_$DATE"
+    echo "[POC] Criando FULL backup em $TARGET"
+    
+   xtrabackup --backup \
+        --datadir=$MYSQL_DATA \
+        --target-dir=$TARGET \
+        --host=$MYSQL_HOST \
+        --user=$MYSQL_USER \
+        --password=$MYSQL_PASSWORD
+
+    echo "$TARGET" > $LAST_FULL
+
+elif [ "$TYPE" = "incremental" ]; then
+    if [ ! -f "$LAST_FULL" ]; then
+        echo "[POC] Nenhum full encontrado, criando full primeiro."
+        $0 full
+        exit 0
+    fi
+
+    BASE=$(cat $LAST_FULL)
+    TARGET="$BACKUP_DIR/inc_$DATE"
+    echo "[POC] Criando INCREMENTAL baseado em $BASE → $TARGET"
+    xtrabackup  --backup \
+        --datadir=$MYSQL_DATA \
+        --incremental-basedir=$BASE \
+        --target-dir=$TARGET \
+        --host=$MYSQL_HOST \
+        --user=$MYSQL_USER \
+        --password=$MYSQL_PASSWORD
+    
+else
+    echo "Uso: $0 [full|incremental]"
+    exit 1
+fi
+
+echo "[$DATE][FINISH $TYPE BACKUP]"
