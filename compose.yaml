@@ -12,78 +12,38 @@ services:
       - '3306:3306'
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
-      interval: 5s
-      timeout: 10s
-      retries: 10
+      - mysql_data:/var/lib/mysql
 
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db
-    ports:
-      - '8080:80'
-    depends_on:
-      db:
-        condition: service_healthy
-
-  backup-scheduler:
-    image: alpine:3.14
+  backup:
+    container_name: mysql_backup
+    image: ubuntu:22.04
     volumes:
-      - ./backups:/backups
-      - ./backup-logs:/logs
-    command: >
-      sh -c "
-      apk add --no-cache mysql-client tzdata;
-      echo 'Serviço de agendamento iniciado' > /logs/backup-scheduler.log;
-      while true; do
-        CURRENT_HOUR=$$(date +%H);
-        CURRENT_MIN=$$(date +%M);
-        DAY_OF_WEEK=$$(date +%u);
-        
-        # Backup diário às 02:00
-        if [ \"$$CURRENT_HOUR\" -eq \"02\" ] && [ \"$$CURRENT_MIN\" -eq \"00\" ]; then
-          echo \"$$(date +'%Y-%m-%d %H:%M:%S') - Iniciando backup DIÁRIO\" >> /logs/backup-scheduler.log;
-          mysqldump -h db -u root -ppassword --all-databases --single-transaction | gzip > /backups/auto-diario-$$(date +%Y%m%d).sql.gz;
-          echo \"Backup diário concluído\" >> /logs/backup-scheduler.log;
-          find /backups -name 'auto-diario-*.sql.gz' -mtime +7 -delete >> /logs/backup-scheduler.log 2>&1;
-        fi;
-        
-        # Backup incremental às 00:00, 08:00, 16:00
-        if [ \"$$CURRENT_HOUR\" -eq \"00\" ] || [ \"$$CURRENT_HOUR\" -eq \"08\" ] || [ \"$$CURRENT_HOUR\" -eq \"16\" ]; then
-          if [ \"$$CURRENT_MIN\" -eq \"00\" ]; then
-            echo \"$$(date +'%Y-%m-%d %H:%M:%S') - Iniciando backup INCREMENTAL\" >> /logs/backup-scheduler.log;
-            mysqldump -h db -u root -ppassword --all-databases --single-transaction | gzip > /backups/auto-inc-$$(date +%Y%m%d_%H%M%S).sql.gz;
-            echo \"Backup incremental concluído\" >> /logs/backup-scheduler.log;
-            
-            # Rotatividade para incrementais semanais (domingo)
-            find /backups -name 'auto-inc-*.sql.gz' -mtime +30 -delete >> /logs/backup-scheduler.log 2>&1;
-          fi;
-        fi;
-        
-        sleep 60;
-      done
-      "
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: unless-stopped
+      - mysql_data:/var/lib/mysql
+      - ./backup-scripts:/scripts
+      - ./backup-scripts/log.txt:/var/log/backup.log
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        # Atualiza e instala pacotes básicos
+        apt update
+        apt install -y curl gnupg2 lsb-release cron
 
-  backup-manual:
-    image: mysql:8.0
-    volumes:
-      - ./backups:/backups
-      - ./backup-logs:/logs
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-    command: >
-      sh -c "
-      echo '$$(date +\"%Y-%m-%d %H:%M:%S\") - Iniciando backup manual' > /logs/backup-manual.log;
-      mysqldump -h db -u root -ppassword --all-databases --single-transaction | gzip > /backups/manual-$$(date +%Y%m%d-%H%M%S).sql.gz;
-      echo 'Backup manual concluído' >> /logs/backup-manual.log;
-      "
-    depends_on:
-      db:
-        condition: service_healthy
+        # Baixa e instala o repositório Percona
+        curl -O https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+        apt install -y ./percona-release_latest.generic_all.deb
+
+        # Configura e instala o XtraBackup
+        percona-release setup pxb-80
+        apt install -y percona-xtrabackup-80
+        xtrabackup --version
+        
+        mkdir backups
+
+        (crontab -l 2>/dev/null; echo "* * * * * /scripts/backup.sh incremental >> /scripts/log.txt 2>&1") | crontab -
+        (crontab -l 2>/dev/null; echo "*/5 * * * * /scripts/backup.sh full >> /scripts/log.txt 2>&1") | crontab -
+        
+        cron -f
+
+volumes:
+  mysql_data:

@@ -1,1 +1,5 @@
 .vscode/
+
+backups-mapping/*
+!backups-mapping/.gitkeep 
+log.txt
