@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #exec >> /proc/1/fd/1 2>&1
+CORRELATION_ID=$(date +%s%N)
 
 MYSQL_HOST=db
 MYSQL_USER=root
@@ -14,11 +15,11 @@ DATE=$(date +"%Y-%m-%d_%H-%M-%S.%3N")
 
 LAST_FULL="$BACKUP_DIR/last_full.txt"
 
-echo "[$(date +"%Y-%m-%d_%H-%M-%S.%3N")][START $TYPE BACKUP]"
+echo "$CORRELATION_ID - [$(date +"%Y-%m-%d_%H-%M-%S.%3N")][START $TYPE BACKUP]"
 
 if [ "$TYPE" = "full" ]; then
     TARGET="$BACKUP_DIR/full_$DATE"
-    echo "[POC] Criando FULL backup em $TARGET"
+    echo "$CORRELATION_ID - [POC] Criando FULL backup em $TARGET"
     
    xtrabackup --backup \
         --datadir=$MYSQL_DATA \
@@ -32,14 +33,14 @@ if [ "$TYPE" = "full" ]; then
 
 elif [ "$TYPE" = "incremental" ]; then
     if [ ! -f "$LAST_FULL" ]; then
-        echo "[POC] Nenhum full encontrado, criando full primeiro."
+        echo "$CORRELATION_ID - [POC] Nenhum full encontrado, criando full primeiro."
         $0 full
         exit 0
     fi
 
     BASE=$(cat $LAST_FULL)
     TARGET="$BACKUP_DIR/inc_$DATE"
-    echo "[POC] Criando INCREMENTAL baseado em $BASE → $TARGET"
+    echo "$CORRELATION_ID - [POC] Criando INCREMENTAL baseado em $BASE → $TARGET"
     xtrabackup  --backup \
         --datadir=$MYSQL_DATA \
         --incremental-basedir=$BASE \
@@ -54,5 +55,5 @@ else
     exit 1
 fi
 
-echo "[$(date +"%Y-%m-%d_%H-%M-%S.%3N")][FINISH $TYPE BACKUP]"
+echo "$CORRELATION_ID - [$(date +"%Y-%m-%d_%H-%M-%S.%3N")][FINISH $TYPE BACKUP]"
 echo
