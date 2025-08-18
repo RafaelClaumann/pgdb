@@ -14,7 +14,7 @@ DATE=$(date +"%Y-%m-%d_%H-%M-%S.%3N")
 
 LAST_FULL="$BACKUP_DIR/last_full.txt"
 
-echo "[$DATE][START $TYPE BACKUP]"
+echo "[$(date +"%Y-%m-%d_%H-%M-%S.%3N")][START $TYPE BACKUP]"
 
 if [ "$TYPE" = "full" ]; then
     TARGET="$BACKUP_DIR/full_$DATE"
@@ -25,7 +25,8 @@ if [ "$TYPE" = "full" ]; then
         --target-dir=$TARGET \
         --host=$MYSQL_HOST \
         --user=$MYSQL_USER \
-        --password=$MYSQL_PASSWORD
+        --password=$MYSQL_PASSWORD \
+        >/dev/null 2>&1
 
     echo "$TARGET" > $LAST_FULL
 
@@ -45,11 +46,13 @@ elif [ "$TYPE" = "incremental" ]; then
         --target-dir=$TARGET \
         --host=$MYSQL_HOST \
         --user=$MYSQL_USER \
-        --password=$MYSQL_PASSWORD
+        --password=$MYSQL_PASSWORD \
+        >/dev/null 2>&1
     
 else
     echo "Uso: $0 [full|incremental]"
     exit 1
 fi
 
-echo "[$DATE][FINISH $TYPE BACKUP]"
+echo "[$(date +"%Y-%m-%d_%H-%M-%S.%3N")][FINISH $TYPE BACKUP]"
+echo
