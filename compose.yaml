@@ -25,20 +25,21 @@ services:
       - /bin/bash
       - -c
       - |
+        # Atualiza e instala pacotes básicos
         apt update
-        apt install curl -y
+        apt install -y curl gnupg2 lsb-release cron
+
+        # Baixa e instala o repositório Percona
         curl -O https://repo.percona.com/apt/percona-release_latest.generic_all.deb
-        apt install gnupg2 lsb-release ./percona-release_latest.generic_all.deb -y
-        apt update
+        apt install -y ./percona-release_latest.generic_all.deb
+
+        # Configura e instala o XtraBackup
         percona-release setup pxb-80
-        apt install percona-xtrabackup-80 -y
+        apt install -y percona-xtrabackup-80
         xtrabackup --version
-        
-        apt install cron -y
         
         mkdir backups
 
-        # Configurar crons do root via crontab
         (crontab -l 2>/dev/null; echo "* * * * * /scripts/backup.sh incremental >> /scripts/log.txt 2>&1") | crontab -
         (crontab -l 2>/dev/null; echo "*/5 * * * * /scripts/backup.sh full >> /scripts/log.txt 2>&1") | crontab -
         
