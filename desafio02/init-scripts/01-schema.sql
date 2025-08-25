@@ -14,10 +14,13 @@ CREATE TABLE funcionarios (
 -- 'I' para inserção, 'U' para update, 'D' para delete
 CREATE TABLE auditoria_funcionarios (
     auditoria_id INT AUTO_INCREMENT PRIMARY KEY,
-    operacao CHAR(1),
-    data_operacao TIMESTAMP NOT NULL,
+    operacao ENUM('I','U','D') NOT NULL,
+    data_operacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id INT,
-    nome VARCHAR(100),
-    cargo VARCHAR(100),
-    salario DECIMAL(10, 2)
+    new_nome VARCHAR(100),
+    old_nome VARCHAR(100),
+    new_cargo VARCHAR(100),
+    old_cargo VARCHAR(100),
+    new_salario DECIMAL(10, 2),
+    old_salario DECIMAL(10, 2)
 );
