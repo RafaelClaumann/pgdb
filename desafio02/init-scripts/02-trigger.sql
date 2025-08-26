@@ -1,14 +1,15 @@
--- SHOW TRIGGERS;
--- SHOW TRIGGERS FROM <database_name>;
--- DROP TRIGGER IF EXISTS <trigger_name>;
--- CREATE TRIGGER <trigger_name> { BEFORE | AFTER } { INSERT | UPDATE | DELETE } ON <table_name>;
+-- Comandos úteis:
+--  SHOW TRIGGERS;
+--  SHOW TRIGGERS FROM <database_name>;
+--  DROP TRIGGER IF EXISTS <trigger_name>;
+--  CREATE TRIGGER <trigger_name> { BEFORE | AFTER } { INSERT | UPDATE | DELETE } ON <table_name>;
 
 USE empresa;
 
 -- Criar a trigger
 DELIMITER $$
 
--- trigger apos inserir um novo funcionario
+-- Trigger disparada apos inserir um novo funcionario
 CREATE TRIGGER after_insert_funcionarios
 AFTER INSERT ON funcionarios
 FOR EACH ROW
@@ -29,7 +30,7 @@ BEGIN
     );
 END$$
 
--- trigger apos atualizar um novo funcionario
+-- Trigger disparada apos atualizar um novo funcionario
 CREATE TRIGGER after_update_funcionarios
 AFTER UPDATE ON funcionarios
 FOR EACH ROW
@@ -50,7 +51,7 @@ BEGIN
     );
 END$$
 
--- trigger apos deletar um funcionario
+-- Trigger disparada apos deletar um funcionario
 CREATE TRIGGER after_delete_funcionarios
 AFTER DELETE ON funcionarios
 FOR EACH ROW
