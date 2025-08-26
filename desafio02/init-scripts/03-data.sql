@@ -1,6 +1,7 @@
 USE empresa;
 
 -- Insere 3 funcionarios
+--
 -- Devem ser criados 3 registros na tabela `auditoria_funcionarios`
 -- Total registros `auditoria_funcionarios` = 3
 INSERT INTO funcionarios(id, nome, cargo, salario)
@@ -9,6 +10,8 @@ VALUES      (1, 'Rafael', 'Desenvolvedor', 5500.00),
             (3, 'Carlos', 'Gerente', 7800.00);
 
 -- Atualiza salário e cargo de um funcionário
+-- Funcionario id = 1: (1, 'Rafael', 'Desenvolvedor', 5500.00)
+--
 -- Deve ser criado 1 registro na tabela `auditoria_funcionarios`
 -- Total registros `auditoria_funcionarios` = 4
 UPDATE  funcionarios
@@ -18,6 +21,8 @@ WHERE
         id = 1;
 
 -- Atualiza nome de outro funcionário
+-- Funcionario id = 2: (2, 'Mariana', 'Analista', 4200.50)
+--
 -- Deve ser criado 1 registro na tabela `auditoria_funcionarios`
 -- Total registros `auditoria_funcionarios` = 5
 UPDATE  funcionarios
@@ -26,6 +31,8 @@ WHERE
         id = 2;
 
 -- Remove um funcionário
+-- Funcionario id = 3: (3, 'Carlos', 'Gerente', 7800.00)
+--
 -- Deve ser criado 1 registro na tabela `auditoria_funcionarios`
 -- Total registros `auditoria_funcionarios` = 6
 DELETE FROM funcionarios
