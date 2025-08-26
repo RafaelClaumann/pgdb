@@ -1,7 +1,7 @@
 -- SHOW TRIGGERS;
--- SHOW TRIGGERS FROM <database_name;
+-- SHOW TRIGGERS FROM <database_name>;
 -- DROP TRIGGER IF EXISTS <trigger_name>;
--- CREATE TRIGGER <trigger_name> { BEFORE | AFTER } { INSERT | UPDATE | DELETE } ON <table_name>
+-- CREATE TRIGGER <trigger_name> { BEFORE | AFTER } { INSERT | UPDATE | DELETE } ON <table_name>;
 
 USE empresa;
 
