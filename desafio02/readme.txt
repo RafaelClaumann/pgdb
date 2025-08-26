@@ -33,3 +33,18 @@ Critérios de avaliação
 
 
 *   Prazo: Entregar atividade conforme prazo estabelecido.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Resultado da tabela `auditoria_funcionarios` após execução dos scripts em `03-data.sql`:
+
++--------------+---------------------+----------+------+---------------+----------+-----------------------+---------------+-------------+-------------+
+| auditoria_id | data_hora           | operacao | id   | new_nome      | old_nome | new_cargo             | old_cargo     | new_salario | old_salario |
++--------------+---------------------+----------+------+---------------+----------+-----------------------+---------------+-------------+-------------+
+|            1 | 2025-08-25 23:59:51 | I        |    1 | Rafael        | NULL     | Desenvolvedor         | NULL          |     5500.00 |        NULL |
+|            2 | 2025-08-25 23:59:51 | I        |    2 | Mariana       | NULL     | Analista              | NULL          |     4200.50 |        NULL |
+|            3 | 2025-08-25 23:59:51 | I        |    3 | Carlos        | NULL     | Gerente               | NULL          |     7800.00 |        NULL |
+|            4 | 2025-08-25 23:59:51 | U        |    1 | Rafael        | Rafael   | Desenvolvedor Sênior  | Desenvolvedor |     6000.00 |     5500.00 |
+|            5 | 2025-08-25 23:59:51 | U        |    2 | Mariana Silva | Mariana  | Analista              | Analista      |     4200.50 |     4200.50 |
+|            6 | 2025-08-25 23:59:51 | D        |    3 | NULL          | Carlos   | NULL                  | Gerente       |        NULL |     7800.00 |
++--------------+---------------------+----------+------+---------------+----------+-----------------------+---------------+-------------+-------------+
