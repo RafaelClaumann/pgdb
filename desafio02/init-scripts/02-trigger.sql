@@ -30,7 +30,7 @@ BEGIN
     );
 END$$
 
--- Trigger disparada apos atualizar um novo funcionario
+-- Trigger disparada apos atualizar um funcionario
 CREATE TRIGGER after_update_funcionarios
 AFTER UPDATE ON funcionarios
 FOR EACH ROW
@@ -69,6 +69,52 @@ BEGIN
         NULL, OLD.nome,
         NULL, OLD.cargo,
         NULL, OLD.salario
+    );
+END$$
+
+-- Testando triggers com campo no formato JSON
+-- São as mesmas triggers mostradas acima, porém com o campo text_data recebendo JSON
+
+-- Trigger disparada apos inserir um novo funcionario
+CREATE TRIGGER after_insert_funcionarios_json
+AFTER INSERT ON funcionarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_funcionarios_json (
+        operacao,
+        text_data
+    )
+    VALUES (
+        'I',
+        JSON_OBJECT(
+            'id_cliente', NEW.id,
+            'nome', NEW.nome,
+            'cargo', NEW.cargo,
+            'salario', NEW.salario
+        )
+    );
+END$$
+
+-- Trigger disparada apos atualizar um funcionario
+CREATE TRIGGER after_update_funcionarios_json
+AFTER UPDATE ON funcionarios
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_funcionarios_json (
+        operacao,
+        text_data
+    )
+    VALUES (
+        'U',
+        JSON_OBJECT(
+            'id_cliente', NEW.id,
+            'nome', NEW.nome,
+            'cargo', NEW.cargo,
+            'salario', NEW.salario,
+            'old_nome', OLD.nome,
+            'old_cargo', OLD.cargo,
+            'old_salario', OLD.salario
+        )
     );
 END$$
 

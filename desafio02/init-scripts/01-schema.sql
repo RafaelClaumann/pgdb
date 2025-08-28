@@ -24,3 +24,10 @@ CREATE TABLE auditoria_funcionarios (
     new_salario DECIMAL(10, 2),
     old_salario DECIMAL(10, 2)
 );
+
+CREATE TABLE auditoria_funcionarios_json (
+    auditoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    operacao ENUM('I','U','D') NOT NULL,
+    data_operacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    text_data JSON NOT NULL
+);
